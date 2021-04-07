@@ -1,0 +1,45 @@
+{% include 'header.html' %}
+
+<body>
+{% if not current_user.is_authenticated %}
+<a href="{{ url_for('register') }}">Registration</a>
+<a href="{{ url_for('login') }}">Login</a>
+{% else %}
+<a href="{{ url_for('logout') }}">Logout</a>
+    <h2>{{ current_user.name }}</h2>
+{% endif %}
+{% if current_user.is_authenticated %}
+    <button class="open-button" onclick="openForm()">Создать новую доску</button>
+{% endif %}
+
+<div class="form-popup" id="myForm">
+  <form action="{{ url_for('main_page') }}" class="form-container" method="post">
+    <h1>Создание новой доски</h1>
+
+    <label for="name"><b>Название доски</b></label>
+    <input type="text" placeholder="Название доски" name="name" required>
+
+    <label for="privacy">Выберите тип:</label>
+    <select id="privacy" name="mode">
+      <option value="private">Приватная</option>
+      <option value="public">Публичная</option>
+    </select>
+
+    <button type="submit" class="btn" formmethod="post">Подтвердить</button>
+    <button type="button" class="btn cancel" onclick="closeForm()">Закрыть</button>
+  </form>
+</div>
+{% for desk in desks %}
+    <a href="{{ url_for('desk', index=desk.id) }}"><h1>{{ desk.name }}</h1></a>
+        {{ desk.mode }}
+    {% endfor %}
+      <script>
+          function openForm() {
+  document.getElementById("myForm").style.display = "block";
+}
+        function closeForm() {
+          document.getElementById("myForm").style.display = "none";
+        }
+      </script>
+</body>
+</html>

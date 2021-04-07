@@ -1,0 +1,5 @@
+{% include 'header.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+<body>
+{{ wtf.quick_form(form, novalidate=True, button_map={"submit": "primary"}) }}
+</body>

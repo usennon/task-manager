@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    {{ desk.name }}
+    <h3>Users:</h3>
+    <ul>
+        {% for user in users %}
+        <li>{{ user.name }}</li>
+        {% endfor %}
+    </ul>
+    <a href="{{ url_for('main_page') }}">Return to the main page</a>
+    {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+    <form action="{{ url_for('add_user', index=desk.id) }}">
+        <input type="text" placeholder="Введите имя пользователя" name="user_name">
+        <button type="submit" class="btn" formmethod="post">Подтвердить</button>
+    </form>
+    <form action="{{ url_for('desk', index=desk.id) }}" method="post">
+        <input type="text" placeholder="Название карточки" name="name" required>
+        <label for="start">Дедлайн</label>
+
+        <input type="date" id="start" name="trip-start"
+               value="2021-03-05"
+               min="2021-01-01" max="2030-01-01">
+        <button type="submit" class="btn" formmethod="post">Подтвердить</button>
+    </form>
+{% for card in cards %}
+    {% if card.has_done == False %}
+    <a href="{{ url_for('show_card', index=desk.id, card_id=card.id) }}">
+        <h2>{{ card.header }} until {{ card.deadline }}</h2>
+        <form action="{{ url_for('delete', card_id=card.id) }}">
+            <button>Delete</button>
+        </form>
+        <form action="{{ url_for('change_status', card_id=card.id) }}">
+            <button>Done</button>
+        </form>
+    </a>
+    {% else %}
+        <div class="done">
+            <a href="{{ url_for('show_card', index=desk.id, card_id=card.id) }}">
+                <h2>{{ card.header }} until {{ card.deadline }} done</h2>
+                <form action="{{ url_for('delete', card_id=card.id) }}">
+                    <button>Delete</button>
+                </form>
+            </a>
+        </div>
+    {% endif %}
+{% endfor %}
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {% import "bootstrap/wtf.html" as wtf %}
+</head>
+<body>
+<a href="{{ url_for('desk', index=index) }}">Get back</a>
+    <form action="{{ url_for('show_card', card_id=card.id, index=index) }}">
+        <label>Change title</label>
+        <input type="text" name="title">
+        <label>Change description</label>
+        <input type="text" name="description">
+        <label>Change deadline:</label>
+        <input type="date" id="start" name="trip-start"
+               value="2021-03-05"
+               min="2021-01-01" max="2030-01-01">
+        <button type="submit" class="btn" formmethod="post">Подтвердить</button>
+    </form>
+ <h1>{{ card.header }} finish until {{ card.deadline }}</h1>
+    <p>{{ card.description }}</p>
+
+<hr>
+<h3>Comments</h3>
+{{ wtf.quick_form(form, novalidate=True, button_map={"submit": "primary"}) }}
+
+{% for comment in comments %}
+<p>{{ comment.parent_user.name }}</p>
+<p>{{ comment.text }}</p>
+{% endfor %}
+</body>
+</html>
