@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
-from flask_sqlalchemy import SQLAlchemy
+from markupsafe import soft_unicode
 from forms import RegisterForm, LoginForm, CommentForm
 from flask_bootstrap import Bootstrap
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -7,6 +7,7 @@ from flask_login import login_user, LoginManager, current_user, logout_user, log
 import datetime
 import os
 from dotenv import load_dotenv
+from models import User, TaskCard, Desk, association_table, Comment, db
 
 
 dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
@@ -23,10 +24,11 @@ login_manager.init_app(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///desks.db"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-db = SQLAlchemy(app)
 
-from models import User, TaskCard, Desk, association_table, db, Comment
+db.init_app(app)
 
+with app.app_context():
+    db.create_all()
 
 @login_manager.user_loader
 def load_user(user_id):

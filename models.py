@@ -1,10 +1,11 @@
-from app import db
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import ForeignKey, Table
 from sqlalchemy.orm import relationship
 from flask_login import UserMixin
+from flask_sqlalchemy import SQLAlchemy
 
 Base = declarative_base()
+db = SQLAlchemy()
 
 association_table = Table('association', db.metadata,
                           db.Column('users_id', db.Integer, ForeignKey('users.id')),
@@ -57,5 +58,3 @@ class Comment(db.Model, Base):
     parent_user_id = db.Column(db.Integer, ForeignKey('users.id'))
 
 
-
-db.create_all()

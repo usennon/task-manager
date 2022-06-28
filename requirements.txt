@@ -3,3 +3,8 @@ SQLAlchemy~=1.4.5
 WTForms~=2.3.3
 Werkzeug~=1.0.1
 python-dotenv~=0.17.0
+flask_sqlalchemy
+flask_bootstrap
+flask_login
+flask_wtf
+MarkupSafe~=2.0.1
